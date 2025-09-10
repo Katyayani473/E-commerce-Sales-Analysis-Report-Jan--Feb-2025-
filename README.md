@@ -46,9 +46,11 @@ CREATE TABLE orders (
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
+```
 
 ## Data Insertion
-<pre>INSERT INTO customers (customer_id, first_name, last_name, email, city, country) VALUES
+```
+INSERT INTO customers (customer_id, first_name, last_name, email, city, country) VALUES
 (1, 'Alice', 'Johnson', 'alice.j@email.com', 'New York', 'USA'),
 (2, 'Bob', 'Smith', 'bob.s@email.com', 'London', 'UK'),
 (3, 'Charlie', 'Davis', 'charlie.d@email.com', 'Paris', 'France'),
@@ -85,14 +87,69 @@ INSERT INTO orders (order_id, customer_id, product_id, quantity, total_price, or
 (1009, 9, 107, 1, 60.00, '2025-02-04', 'Shipped'),
 (1010, 10, 103, 1, 75.00, '2025-02-05', 'Shipped'),
 (1011, 1, 102, 1, 25.00, '2025-02-05', 'Pending'),
-(1012, 2, 106, 1, 20.00, '2025-02-06', 'Pending');</pre>
+(1012, 2, 106, 1, 20.00, '2025-02-06', 'Pending');
+```
 ## Data Analysis And Findings
 ## Question 1: What are the total sales, total orders, and average order value?
-<pre>
+```
   select sum(total_price)as total_sales,
 count(*)as total_orders,
 sum(total_price)/count(*) as avg_order_value  from orders
-</pre>
+```
 ## Question 2: What are the monthly and daily sales trends?
-<pre>select month(order_date),day(order_date),sum(total_price) from orders group by month(order_date),day(order_date)</pre>
+```
+select month(order_date),day(order_date),sum(total_price) from orders group by month(order_date),day(order_date)</pre>
+```
+## Question 3: What is our total revenue for the current year?
+```
+select year(order_date),sum(total_price)as total_revenue from orders
+where year(order_date)=year(curdate())
+group by year(order_date)
+```
+## Question 4: Who are our top 10 customers by total spending?
+```
+select o.customer_id,sum(total_price) as totalsales from customers c join orders o
+on c.customer_id=o.customer_id group by o.customer_id order by totalsales desc limit 10
+```
+## Question 5: How many unique customers have placed an order?
+```
+select count(distinct customer_id) as unique_cus from orders
+```
+## Question6:How many different customers have placed more than one order?
+```
+select customer_id,count(customer_id) as unique_cus from orders group by customer_id having
+count( customer_id)>1
+```
+
+## Question7:divide the customers into two categories(old and new) and count how many are in each category?
+```
+select customer_id,count(*) as cust_count ,
+case
+when count(customer_id)>1 then 'old'
+else 'new'
+end as ctype
+from orders group by customer_id
+```
+## Question 8: What are the top 5 best-selling products by quantity and revenue?
+```
+select product_name,sum(quantity) as total_quantity_sold,sum(total_price) as total_revenue
+from products p join orders o on p.product_id=o.product_id group by product_name
+order by total_quantity_sold desc ,total_revenue desc limit 5
+```
+## Question 9: What is the average price of products in each category?
+```
+select category,round(avg(price),2) as avg_price from products group by category
+```
+
+## Question 10: What are the top 5 cities by total sales?
+```
+select city,sum(total_price) as total_sale from customers c join orders o
+on c.customer_id=o.customer_id group by city
+order by total_sale desc limit 5 
+```
+## Question 11:Which city has highest number of customers?
+```
+select city,count(*) as total_customers from customers group by city
+order by total_customers desc limit 1
+```
 
