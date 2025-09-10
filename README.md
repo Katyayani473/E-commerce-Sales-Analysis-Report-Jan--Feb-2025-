@@ -14,7 +14,8 @@ Use SQL to answer specific business questions and derive insights from the sales
 ## Project Structure
 ## Database Schema
 The analysis is performed on three main tables: customers, products, and orders. The schema is designed to track customer information, product details, and all order transactions.
-<pre>create database p3;
+```
+create database p3;
 use p3;
 
 CREATE TABLE customers (
@@ -45,7 +46,7 @@ CREATE TABLE orders (
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
-</pre>
+
 ## Data Insertion
 <pre>INSERT INTO customers (customer_id, first_name, last_name, email, city, country) VALUES
 (1, 'Alice', 'Johnson', 'alice.j@email.com', 'New York', 'USA'),
@@ -85,7 +86,7 @@ INSERT INTO orders (order_id, customer_id, product_id, quantity, total_price, or
 (1010, 10, 103, 1, 75.00, '2025-02-05', 'Shipped'),
 (1011, 1, 102, 1, 25.00, '2025-02-05', 'Pending'),
 (1012, 2, 106, 1, 20.00, '2025-02-06', 'Pending');</pre>
-# Data Analysis And Findings
+## Data Analysis And Findings
 ## Question 1: What are the total sales, total orders, and average order value?
 <pre>
   select sum(total_price)as total_sales,
