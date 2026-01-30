@@ -1,22 +1,43 @@
-# E-commerce_Sales_Analysis
-## Project Overview
-### project title:E-commerce_Sales_Analysis
-### level:Beginner
-### Database:p3
-This project is a data-driven analysis of a sample e-commerce dataset. The goal is to demonstrate the use of SQL to answer key business questions related to sales performance, customer behavior, and product trends. The entire project is self-contained and is based on a simple, yet representative, database schema.
-## Objectives
-## 1.Set up a retail sales database: 
-Create and populate a retail sales database with the provided sales data.
-## 2.Exploratory Data Analysis (EDA): 
-Perform basic exploratory data analysis to understand the dataset.
-## 3.Business Analysis: 
-Use SQL to answer specific business questions and derive insights from the sales data.
-## Project Structure
-## Database Schema
-The analysis is performed on three main tables: customers, products, and orders. The schema is designed to track customer information, product details, and all order transactions.
-```
-create database p3;
-use p3;
+# 🛒 E-commerce Sales Analysis
+
+## 📌 Project Overview
+
+This project focuses on analyzing a sample e-commerce dataset using SQL to answer important
+business questions related to sales performance, customer behavior, and product trends.
+The project demonstrates database design, data insertion, exploratory analysis, and
+business-driven SQL queries using a simple yet realistic schema.
+
+---
+
+## 🎯 Project Objectives
+
+1. **Set up a retail sales database**  
+   - Create and populate a relational database using customer, product, and order data.
+
+2. **Exploratory Data Analysis (EDA)**  
+   - Understand sales distribution, customer activity, and product performance.
+
+3. **Business Analysis**  
+   - Use SQL queries to derive actionable insights for business decision-making.
+
+---
+
+## 🗂 Project Structure
+
+### Database Schema
+The analysis is based on three core tables:
+
+- **Customers** – stores customer demographic details  
+- **Products** – stores product and pricing information  
+- **Orders** – tracks customer purchases and transactions  
+
+---
+
+## 🛠 Database Creation
+
+```sql
+CREATE DATABASE p3;
+USE p3;
 
 CREATE TABLE customers (
     customer_id INT PRIMARY KEY,
@@ -44,37 +65,42 @@ CREATE TABLE orders (
     order_date DATE,
     status VARCHAR(20),
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
-    FOREIGN KEY (product_id) REFERENCES products(product_id)
+```
+## 📥 Data Insertion
+Sample data was inserted into all tables to simulate real-world e-commerce transactions.
+### Customers
+```sql
+INSERT INTO customers VALUES
+(1,'Alice','Johnson','alice.j@email.com','New York','USA'),
+(2,'Bob','Smith','bob.s@email.com','London','UK'),
+(3,'Charlie','Davis','charlie.d@email.com','Paris','France'),
+(4,'Diana','Miller','diana.m@email.com','Berlin','Germany'),
+(5,'Eva','Garcia','eva.g@email.com','Madrid','Spain'),
+(6,'Frank','Wilson','frank.w@email.com','Sydney','Australia'),
+(7,'Grace','Moore','grace.m@email.com','Tokyo','Japan'),
+(8,'Henry','Lee','henry.l@email.com','Beijing','China'),
+(9,'Isla','Clark','isla.c@email.com','New York','USA'),
+(10,'Jack','Evans','jack.e@email.com','London','UK');
+```
+### Products
+```sql
+INSERT INTO products VALUES
+(101,'Laptop','Electronics',1200.00,50),
+(102,'Mouse','Electronics',25.00,200),
+(103,'Keyboard','Electronics',75.00,150),
+(104,'Desk Chair','Furniture',150.00,75),
+(105,'Coffee Table','Furniture',220.00,40),
+(106,'T-shirt','Apparel',20.00,500),
+(107,'Jeans','Apparel',60.00,300),
+(108,'Running Shoes','Apparel',85.00,100),
+(109,'Cookbook','Books',30.00,90),
+(110,'Novel','Books',15.00,120);
+FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 ```
 
-## Data Insertion
-```
-INSERT INTO customers (customer_id, first_name, last_name, email, city, country) VALUES
-(1, 'Alice', 'Johnson', 'alice.j@email.com', 'New York', 'USA'),
-(2, 'Bob', 'Smith', 'bob.s@email.com', 'London', 'UK'),
-(3, 'Charlie', 'Davis', 'charlie.d@email.com', 'Paris', 'France'),
-(4, 'Diana', 'Miller', 'diana.m@email.com', 'Berlin', 'Germany'),
-(5, 'Eva', 'Garcia', 'eva.g@email.com', 'Madrid', 'Spain'),
-(6, 'Frank', 'Wilson', 'frank.w@email.com', 'Sydney', 'Australia'),
-(7, 'Grace', 'Moore', 'grace.m@email.com', 'Tokyo', 'Japan'),
-(8, 'Henry', 'Lee', 'henry.l@email.com', 'Beijing', 'China'),
-(9, 'Isla', 'Clark', 'isla.c@email.com', 'New York', 'USA'),
-(10, 'Jack', 'Evans', 'jack.e@email.com', 'London', 'UK');
-
-INSERT INTO products (product_id, product_name, category, price, stock_quantity) VALUES
-(101, 'Laptop', 'Electronics', 1200.00, 50),
-(102, 'Mouse', 'Electronics', 25.00, 200),
-(103, 'Keyboard', 'Electronics', 75.00, 150),
-(104, 'Desk Chair', 'Furniture', 150.00, 75),
-(105, 'Coffee Table', 'Furniture', 220.00, 40),
-(106, 'T-shirt', 'Apparel', 20.00, 500),
-(107, 'Jeans', 'Apparel', 60.00, 300),
-(108, 'Running Shoes', 'Apparel', 85.00, 100),
-(109, 'Cookbook', 'Books', 30.00, 90),
-(110, 'Novel', 'Books', 15.00, 120);
-
-
+### Orders
+```sql
 INSERT INTO orders (order_id, customer_id, product_id, quantity, total_price, order_date, status) VALUES
 (1001, 1, 101, 1, 1200.00, '2025-01-15', 'Shipped'),
 (1002, 2, 106, 2, 40.00, '2025-01-16', 'Shipped'),
@@ -91,38 +117,38 @@ INSERT INTO orders (order_id, customer_id, product_id, quantity, total_price, or
 ```
 ## Data Analysis And Findings
 ## Question 1: What are the total sales, total orders, and average order value?
-```
+```sql
   select sum(total_price)as total_sales,
 count(*)as total_orders,
 sum(total_price)/count(*) as avg_order_value  from orders
 ```
 ## Question 2: What are the monthly and daily sales trends?
-```
+```sql
 select month(order_date),day(order_date),sum(total_price) from orders group by month(order_date),day(order_date)</pre>
 ```
 ## Question 3: What is our total revenue for the current year?
-```
+```sql
 select year(order_date),sum(total_price)as total_revenue from orders
 where year(order_date)=year(curdate())
 group by year(order_date)
 ```
 ## Question 4: Who are our top 10 customers by total spending?
-```
+```sql
 select o.customer_id,sum(total_price) as totalsales from customers c join orders o
 on c.customer_id=o.customer_id group by o.customer_id order by totalsales desc limit 10
 ```
 ## Question 5: How many unique customers have placed an order?
-```
+```sql
 select count(distinct customer_id) as unique_cus from orders
 ```
 ## Question6:How many different customers have placed more than one order?
-```
+```sql
 select customer_id,count(customer_id) as unique_cus from orders group by customer_id having
 count( customer_id)>1
 ```
 
 ## Question7:divide the customers into two categories(old and new) and count how many are in each category?
-```
+```sql
 select customer_id,count(*) as cust_count ,
 case
 when count(customer_id)>1 then 'old'
@@ -131,25 +157,37 @@ end as ctype
 from orders group by customer_id
 ```
 ## Question 8: What are the top 5 best-selling products by quantity and revenue?
-```
+```sql
 select product_name,sum(quantity) as total_quantity_sold,sum(total_price) as total_revenue
 from products p join orders o on p.product_id=o.product_id group by product_name
 order by total_quantity_sold desc ,total_revenue desc limit 5
 ```
 ## Question 9: What is the average price of products in each category?
-```
+```sql
 select category,round(avg(price),2) as avg_price from products group by category
 ```
 
 ## Question 10: What are the top 5 cities by total sales?
-```
+```sql
 select city,sum(total_price) as total_sale from customers c join orders o
 on c.customer_id=o.customer_id group by city
 order by total_sale desc limit 5 
 ```
 ## Question 11:Which city has highest number of customers?
-```
+```sql
 select city,count(*) as total_customers from customers group by city
 order by total_customers desc limit 1
 ```
+
+## 📈 Key Insights
+-Electronics generate the highest revenue among all categories
+-A small number of repeat customers contribute significantly to sales
+-Certain cities dominate total revenue and customer base
+-Average order value remains stable across transactions
+-Apparel products show high sales volume but moderate revenue
+
+## 🧠 Conclusion
+This project demonstrates how SQL can be used to analyze e-commerce data effectively.
+By combining relational database design with business-focused queries, the analysis
+provides valuable insights into customer behavior, sales trends, and product performance.
 
