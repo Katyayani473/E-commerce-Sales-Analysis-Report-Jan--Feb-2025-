@@ -124,7 +124,8 @@ sum(total_price)/count(*) as avg_order_value  from orders
 ```
 ## Question 2: What are the monthly and daily sales trends?
 ```sql
-select month(order_date),day(order_date),sum(total_price) from orders group by month(order_date),day(order_date)</pre>
+select month(order_date),day(order_date),sum(total_price) from
+ orders group by month(order_date),day(order_date)</pre>
 ```
 ## Question 3: What is our total revenue for the current year?
 ```sql
